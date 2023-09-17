@@ -45,6 +45,9 @@ fun Application.mainRouting() {
         get("/showH2H") {
             showH2HHistory(database)
         }
+        get("/tourneyDetails") {
+            tourneyDetails(database)
+        }
         get("/novakdjokovic") {
             call.respondHtml {
                 head {
@@ -278,3 +281,39 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.showH2HHistory(
 
 // djokovic = 104925
 // nadal = 104745
+
+public suspend fun PipelineContext<Unit, ApplicationCall>.tourneyDetails(
+    database: Database
+) {
+    val tournamentId = call.parameters["tourneyId"]!!
+    val tourneyMatches = database.matchQueries.selectAllMatchesFromTourney(tourneyId = tournamentId).executeAsList()
+    val tourneysQFS = database.matchQueries.selectQF(tourneyId = tournamentId).executeAsList()
+    val tourneysSFS = database.matchQueries.selectSF(tourneyId = tournamentId).executeAsList()
+    val tourneysF = database.matchQueries.selectF(tourneyId = tournamentId).executeAsOne()
+    val firstMatch = tourneyMatches[0]
+    call.respondHtml {
+        body {
+            h1 {
+                +"${firstMatch.tourney_name} ${firstMatch.tourney_date.substring(0, 4)}"
+                br {}
+            }
+            +"Quarterfinals:"
+            br {}
+            for (qf in tourneysQFS) {
+                +"${idToName(qf.winner_id, database)} def ${idToName(qf.loser_id, database)} ${qf.score}"
+                br {}
+            }
+            br {}
+            +"Semifinals"
+            br {}
+            for (sf in tourneysSFS) {
+                +"${idToName(sf.winner_id, database)} def ${idToName(sf.loser_id, database)} ${sf.score}"
+                br {}
+            }
+            br {}
+            +"Finals"
+            br {}
+            +"${idToName(tourneysF.winner_id, database)} def ${idToName(tourneysF.loser_id, database)} ${tourneysF.score}"
+        }
+    }
+}

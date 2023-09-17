@@ -66,3 +66,15 @@ SELECT * FROM playerMatch WHERE ((winner_id = :player1 AND loser_id = :player2) 
 selectMajorFinalsMatchups:
 SELECT * FROM playerMatch WHERE ((winner_id = :player1 AND loser_id = :player2) OR (winner_id = :player2 AND loser_id = :player1)) AND
  (tourney_id LIKE "%-580" OR tourney_id LIKE "%-520" OR tourney_id LIKE "%-540" OR tourney_id LIKE "%-560") AND round = "F";
+
+selectAllMatchesFromTourney:
+SELECT * FROM playerMatch WHERE tourney_id = :tourneyId;
+
+selectQF:
+SELECT * FROM playerMatch WHERE tourney_id = :tourneyId AND round = "QF";
+
+selectSF:
+SELECT * FROM playerMatch WHERE tourney_id = :tourneyId AND round = "SF";
+
+selectF:
+SELECT * FROM playerMatch WHERE tourney_id = :tourneyId AND round = "F";

@@ -1,5 +1,6 @@
 package org.appchallenge2023.tennis.plugins
 
+import org.appchallenge2023.tennis.sqldelight.data.Database
 import org.appchallenge2023.tennis.sqldelight.data.PlayerMatch
 
 fun dateToReadableFormat(date: Int): String {
@@ -39,4 +40,9 @@ fun returnH2HRecord(matches: List<PlayerMatch>, p1: Long, p2: Long): List<Int> {
         }
     }
     return listOf(p1wins, p2wins)
+}
+
+fun idToName(id: Long, database: Database): String {
+    val info = database.playerQueries.selectPlayerWithId(player_id = id).executeAsOne()
+    return "${info.name_first} ${info.name_last}"
 }
