@@ -1,0 +1,68 @@
+CREATE TABLE IF NOT EXISTS playerMatch (
+  tourney_id TEXT NOT NULL,
+  tourney_name TEXT NOT NULL,
+  surface TEXT NOT NULL,
+  tourney_date TEXT NOT NULL,
+  match_num INTEGER NOT NULL,
+  winner_id INTEGER NOT NULL,
+  winner_rank INTEGER,
+  loser_id INTEGER NOT NULL,
+  loser_rank INTEGER,
+  score TEXT NOT NULL,
+  round TEXT NOT NULL
+);
+
+
+CREATE INDEX IF NOT EXISTS playerMatch_winner_id ON playerMatch(winner_id);
+CREATE INDEX IF NOT EXISTS playerMatch_winner_id ON playerMatch(loser_id);
+
+selectAllMatches:
+SELECT *
+FROM playerMatch;
+
+insertMatch:
+INSERT INTO playerMatch(tourney_id, tourney_name, surface, tourney_date, match_num, winner_id, winner_rank, loser_id, loser_rank, score, round)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+insertMatchObject:
+INSERT INTO playerMatch(tourney_id, tourney_name, surface, tourney_date, match_num, winner_id, winner_rank, loser_id, loser_rank, score, round)
+VALUES ?;
+
+selectMatchesForPlayer:
+SELECT * FROM playerMatch WHERE winner_id = :player OR loser_id = :player ORDER BY tourney_date;
+
+selectWinsInTournamentForPlayer:
+SELECT * FROM playerMatch WHERE winner_id = :player AND tourney_name = :tourney_name ORDER BY tourney_date;
+
+selectLossesInTournamentForPlayer:
+SELECT * FROM playerMatch WHERE loser_id = :player AND tourney_name = :tourney_name ORDER BY tourney_date;
+
+selectLast10MatchesForPlayer:
+SELECT * FROM playerMatch WHERE winner_id = :player OR loser_id = :player ORDER BY tourney_date DESC LIMIT 10;
+
+selectMajorWinsForPlayer:
+SELECT * FROM playerMatch WHERE winner_id = :player AND (tourney_name = "Australian Open" OR tourney_name = "Roland Garros" OR tourney_name = "Wimbledon" OR
+tourney_name = "Us Open" OR tourney_name = "US Open") AND round = "F" ORDER BY tourney_date;
+
+selectTourneyWinsForPlayer:
+SELECT * FROM playerMatch WHERE winner_id = :player AND round = "F" ORDER BY tourney_date;
+
+selectWinsVsTop10:
+SELECT * FROM playerMatch WHERE winner_id = :player AND loser_rank >= 10;
+
+selectMatchesFromTournament:
+SELECT * FROM playerMatch WHERE tourney_name = :name AND tourney_date = :date;
+
+selectAllTourneyNames:
+SELECT DISTINCT tourney_name FROM playerMatch;
+
+selectAllMatchupsWithTwoPlayers:
+SELECT * FROM playerMatch WHERE (winner_id = :player1 OR loser_id = :player1) AND (winner_id = :player2 OR loser_id = :player2);
+
+selectMajorMatchups:
+SELECT * FROM playerMatch WHERE ((winner_id = :player1 AND loser_id = :player2) OR (winner_id = :player2 AND loser_id = :player1)) AND
+ (tourney_id LIKE "%-580" OR tourney_id LIKE "%-520" OR tourney_id LIKE "%-540" OR tourney_id LIKE "%-560");
+
+selectMajorFinalsMatchups:
+SELECT * FROM playerMatch WHERE ((winner_id = :player1 AND loser_id = :player2) OR (winner_id = :player2 AND loser_id = :player1)) AND
+ (tourney_id LIKE "%-580" OR tourney_id LIKE "%-520" OR tourney_id LIKE "%-540" OR tourney_id LIKE "%-560") AND round = "F";

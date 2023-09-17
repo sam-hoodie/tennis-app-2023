@@ -1,0 +1,30 @@
+CREATE TABLE IF NOT EXISTS tennisPlayer (
+  player_id INTEGER PRIMARY KEY NOT NULL,
+  name_first TEXT NOT NULL,
+  name_last TEXT NOT NULL,
+  hand TEXT,
+  dob TEXT,
+  country TEXT,
+  height TEXT,
+  wikidata_id TEXT
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS tennisPlayer_player_id ON tennisPlayer(player_id);
+
+selectAllPlayers:
+SELECT *
+FROM tennisPlayer;
+
+insertPlayer:
+INSERT INTO tennisPlayer(player_id, name_first, name_last, hand, dob, country, height, wikidata_id)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+insertPlayerObject:
+INSERT INTO tennisPlayer(player_id, name_first, name_last, hand, dob, country, height, wikidata_id)
+VALUES ?;
+
+selectPlayerWithId:
+SELECT * FROM tennisPlayer WHERE player_id = :player_id;
+
+selectPlayersWithName:
+SELECT * FROM tennisPlayer WHERE name_first LIKE '%' || :name || '%' OR name_last LIKE '%' || :name || '%';

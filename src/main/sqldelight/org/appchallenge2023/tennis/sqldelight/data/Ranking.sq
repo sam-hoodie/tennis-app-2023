@@ -1,0 +1,33 @@
+CREATE TABLE IF NOT EXISTS playerRanking (
+  ranking_date TEXT NOT NULL,
+  rank INTEGER NOT NULL,
+  player INTEGER NOT NULL,
+  points INTEGER NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS playerRanking_player ON playerRanking(player);
+
+selectAllRankings:
+SELECT *
+FROM playerRanking;
+
+insertRanking:
+INSERT INTO playerRanking(ranking_date, rank, player, points)
+VALUES (?, ?, ?, ?);
+
+insertRankingObject:
+INSERT INTO playerRanking(ranking_date, rank, player, points)
+VALUES ?;
+
+selectRankingsForPlayer:
+SELECT * FROM playerRanking WHERE player = :player ORDER BY ranking_date;
+
+selectTop100:
+SELECT * FROM playerRanking WHERE ranking_date = :ranking_date AND rank <= 100 ORDER BY rank;
+
+selectLast10Rankings:
+SELECT DISTINCT ranking_date FROM playerRanking ORDER BY ranking_date DESC LIMIT 10;
+
+selectLast10RankingsForPlayer:
+SELECT * FROM playerRanking WHERE player = :player ORDER BY ranking_date DESC LIMIT 10;
+
