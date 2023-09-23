@@ -78,3 +78,6 @@ SELECT * FROM playerMatch WHERE tourney_id = :tourneyId AND round = "SF";
 
 selectF:
 SELECT * FROM playerMatch WHERE tourney_id = :tourneyId AND round = "F";
+
+selectAllTourneysFromAYear:
+SELECT DISTINCT tourney_id FROM playerMatch WHERE tourney_date LIKE (:year || '%');

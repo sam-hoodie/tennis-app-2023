@@ -49,6 +49,9 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                         }
                         +" in ${result.tourney_name}"
                         +" on ${dateToReadableFormat(result.tourney_date.toInt())} (score:${result.score})"
+                        a(href = "/showH2H?player1=${player.player_id}&player2=${otherPlayer.player_id}") {
+                            +" [Show History]"
+                        }
 
                     } else {
                         val otherPlayer = database.playerQueries.selectPlayerWithId(result.winner_id).executeAsOne()
@@ -58,6 +61,9 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                         }
                         +" in ${result.tourney_name}"
                         +" on ${dateToReadableFormat(result.tourney_date.toInt())} (score:${result.score})"
+                        a(href = "/showH2H?player1=${player.player_id}&player2=${otherPlayer.player_id}") {
+                            +" [Show History]"
+                        }
                     }
                     br { }
                 }

@@ -48,27 +48,8 @@ fun Application.mainRouting() {
         get("/tourneyDetails") {
             tourneyDetails(database)
         }
-        get("/novakdjokovic") {
-            call.respondHtml {
-                head {
-                    link(rel = "stylesheet", href = "styles.css")
-                }
-                body {
-                    h1(classes = "centeraligntext") {
-                        +"Novak Djokovic"
-                    }
-                    br { }
-                    img(
-                        src = "https://cloudfront-us-east-2.images.arcpublishing.com/reuters/G5GO4GWIVBI6BFWOSPGDZTSWTQ.jpg",
-                        classes = "centeralignimage"
-                    ) {
-                        this.width = "500"
-                    }
-                    a(href = "/", classes = "centeraligntext") {
-                        +"Home page"
-                    }
-                }
-            }
+        get("/tourneysForYear") {
+            tourneysForYear(database)
         }
         get("/styles.css") {
             call.respondCss {
@@ -105,6 +86,10 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.landingPage() {
             }
             a(href = "/showLast10Top100") {
                 +"Show top 100 players"
+            }
+            br{}
+            a(href = "/tourneysForYear?year=2023") {
+                +"Show all tournaments from this year"
             }
         }
     }
@@ -198,6 +183,12 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.showH2HHistory(
     val allH2H = database.matchQueries.selectAllMatchupsWithTwoPlayers(p1Id, p2Id).executeAsList()
     val p1Info = database.playerQueries.selectPlayerWithId(player_id = p1Id).executeAsOne()
     val p2Info = database.playerQueries.selectPlayerWithId(player_id = p2Id).executeAsOne()
+    if (allH2H.isEmpty()) {
+        call.respondHtml {
+            +"There are no previous matches between ${p1Info.name_first} ${p1Info.name_last} and ${p2Info.name_first} ${p2Info.name_last}"
+        }
+        return
+    }
     val p1Wins = arrayListOf<PlayerMatch>()
     val p2Wins = arrayListOf<PlayerMatch>()
     val lastMeeting = allH2H[allH2H.size - 1]
@@ -213,71 +204,104 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.showH2HHistory(
     val p1MajorWins = majorMatchupRecord[0]
     val p2MajorWins = majorMatchupRecord[1]
     call.respondHtml {
-        if (allH2H.isEmpty()) {
-            body {
-                h1 {
-                    +"There are no previous matches between ${p1Info.name_first} ${p1Info.name_last} and ${p2Info.name_first} ${p2Info.name_last}"
+        body {
+            h1 {
+                +"${p1Info.name_first} ${p1Info.name_last} vs ${p2Info.name_first} ${p2Info.name_last}"
+                br {}
+            }
+            if (p1Wins.size > p2Wins.size) {
+                +"Head-to-Head: ${p1Info.name_last} leads ${p1Wins.size}-${p2Wins.size}"
+            } else {
+                +"Head-to-Head: ${p2Info.name_last} leads ${p2Wins.size}-${p1Wins.size}"
+            }
+            br {}
+            br {}
+            +"Last meeting: ${lastMeeting.tourney_name} ${lastMeeting.tourney_date.substring(0, 4)}"
+            br {}
+            when (lastMeeting.winner_id) {
+                p1Id.toLong() -> +"${p1Info.name_last}: ${lastMeeting.score}"
+                p2Id.toLong() -> +"${p2Info.name_last}: ${lastMeeting.score}"
+            }
+            br {}
+            br {}
+            if (majorMatchups.isNotEmpty()) {
+                if (p1MajorWins > p2MajorWins) {
+                    +"${p1Info.name_last} leads in majors ${p1MajorWins}-${p2MajorWins}"
+                } else {
+                    +"${p2Info.name_last} leads in majors ${p2MajorWins}-${p1MajorWins}"
+                }
+                br {}
+                val finalsMatchups = database.matchQueries.selectMajorFinalsMatchups(p1Id, p2Id).executeAsList()
+                val finalsRecord = returnH2HRecord(finalsMatchups, p1Id, p2Id)
+                if (finalsMatchups.isEmpty()) {
+                    +" (none in finals)"
+                } else {
+                    if (finalsRecord[0] > finalsRecord[1]) {
+                        +"${p1Info.name_last} leads in major finals ${finalsRecord[0]}-${finalsRecord[1]}"
+                    } else {
+                        +"${p2Info.name_last} leads in major finals ${finalsRecord[1]}-${finalsRecord[0]}"
+                    }
+                }
+            } else {
+                +"These two players have not met at a major"
+            }
+            br {}
+            br {}
+
+            if (allH2H.size < 5) {
+                +"Last matchups: "
+                br {}
+                for (match in allH2H) {
+                    if (match.winner_id == p1Id) {
+                        +"${p1Info.name_last} won ${match.score} at ${match.tourney_name} in ${
+                            match.tourney_date.substring(
+                                0,
+                                4
+                            )
+                        }"
+                    } else {
+                        +"${p2Info.name_last} won ${match.score} at ${match.tourney_name} in ${
+                            match.tourney_date.substring(
+                                0,
+                                4
+                            )
+                        }"
+                    }
+                    br{}
+                }
+            } else {
+                +"Last 5 matchups:"
+                val lastMatchups = allH2H.subList(allH2H.size - 5, allH2H.size)
+                br {}
+                for (match in lastMatchups) {
+                    if (match.winner_id == p1Id) {
+                        +"${p1Info.name_last} won ${match.score} at ${match.tourney_name} in ${
+                            match.tourney_date.substring(
+                                0,
+                                4
+                            )
+                        }"
+                    } else {
+                        +"${p2Info.name_last} won ${match.score} at ${match.tourney_name} in ${
+                            match.tourney_date.substring(
+                                0,
+                                4
+                            )
+                        }"
+                    }
+                    br {}
                 }
             }
-        } else {
-            body {
-                h1 {
-                    +"${p1Info.name_first} ${p1Info.name_last} vs ${p2Info.name_first} ${p2Info.name_last}"
-                    br {}
-                }
-                if (p1Wins.size > p2Wins.size) {
-                    +"Head-to-Head: ${p1Info.name_last} leads ${p1Wins.size}-${p2Wins.size}"
-                } else {
-                    +"Head-to-Head: ${p2Info.name_last} leads ${p2Wins.size}-${p1Wins.size}"
-                }
-                br {}
-                br {}
-                +"Last meeting: ${lastMeeting.tourney_name} ${lastMeeting.tourney_date.substring(0, 4)}"
-                br {}
-                when (lastMeeting.winner_id) {
-                    p1Id.toLong() -> +"${p1Info.name_last}: ${lastMeeting.score}"
-                    p2Id.toLong() -> +"${p2Info.name_last}: ${lastMeeting.score}"
-                }
-                br {}
-                br {}
-                if (majorMatchups.isNotEmpty()) {
-                    if (p1MajorWins > p2MajorWins) {
-                        +"${p1Info.name_last} leads in majors ${p1MajorWins}-${p2MajorWins}"
-                    } else {
-                        +"${p2Info.name_last} leads in majors ${p2MajorWins}-${p1MajorWins}"
-                    }
-                    br {}
-                    val finalsMatchups = database.matchQueries.selectMajorFinalsMatchups(p1Id, p2Id).executeAsList()
-                    val finalsRecord = returnH2HRecord(finalsMatchups, p1Id, p2Id)
-                    if (finalsMatchups.isEmpty()) {
-                        +" (none in finals)"
-                    } else {
-                        if (finalsRecord[0] > finalsRecord[1]) {
-                            +"${p1Info.name_last} leads in major finals ${finalsRecord[0]}-${finalsRecord[1]}"
-                        } else {
-                            +"${p2Info.name_last} leads in major finals ${finalsRecord[1]}-${finalsRecord[0]}"
-                        }
-                    }
-                } else {
-                    +"These two players have not met at a major"
-                }
-                br {}
-                br {}
-                val last5Matchups = allH2H.subList(allH2H.size - 5, allH2H.size)
-                +"Last 5 matchups:"
-                br {}
-                for (match in last5Matchups) {
-                    if (match.winner_id == p1Id) {
-                        +"${p1Info.name_last} won ${match.score} at ${match.tourney_name} in ${match.tourney_date.substring(0, 4)}"
-                    } else {
-                        +"${p2Info.name_last} won ${match.score} at ${match.tourney_name} in ${match.tourney_date.substring(0, 4)}"
-                    }
-                    br {}
-                }
+            br {}
+            br {}
+            a(href = "/playerpage?searched=${p1Id}") {
+                +"Back to player page"
             }
         }
+
     }
 }
+
 
 // djokovic = 104925
 // nadal = 104745
@@ -289,31 +313,95 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.tourneyDetails(
     val tourneyMatches = database.matchQueries.selectAllMatchesFromTourney(tourneyId = tournamentId).executeAsList()
     val tourneysQFS = database.matchQueries.selectQF(tourneyId = tournamentId).executeAsList()
     val tourneysSFS = database.matchQueries.selectSF(tourneyId = tournamentId).executeAsList()
-    val tourneysF = database.matchQueries.selectF(tourneyId = tournamentId).executeAsOne()
-    val firstMatch = tourneyMatches[0]
+    val tourneysF = database.matchQueries.selectF(tourneyId = tournamentId).executeAsList()
+    call.respondHtml {
+        if (tourneyMatches.isEmpty()) {
+            body {
+                +"There is no data for this tournament/This tournament Doesn't Exist"
+                br{}
+                a(href = "/") {
+                    +"Home"
+                }
+            }
+        } else {
+            val firstMatch = tourneyMatches[0]
+            body {
+                h1 {
+                    +"${firstMatch.tourney_name} ${firstMatch.tourney_date.substring(0, 4)}"
+                    br {}
+                }
+                +"Quarterfinals:"
+                br {}
+                for (qf in tourneysQFS) {
+                    +"${idToName(qf.winner_id, database)} def ${idToName(qf.loser_id, database)} ${qf.score}"
+                    br {}
+                }
+                br {}
+                +"Semifinals"
+                br {}
+                for (sf in tourneysSFS) {
+                    +"${idToName(sf.winner_id, database)} def ${idToName(sf.loser_id, database)} ${sf.score}"
+                    br {}
+                }
+                br {}
+                +"Finals"
+                br {}
+                +"${idToName(tourneysF[0].winner_id, database)} def ${
+                    idToName(
+                        tourneysF[0].loser_id,
+                        database
+                    )
+                } ${tourneysF[0].score}"
+                br {}
+                br {}
+                a(href = "/tourneyDetails?tourneyId=${(tournamentId.substring(0, 4).toInt() - 1).toString()}-${tournamentId.substring(5, tournamentId.length)}") {
+                    +"Previous Year"
+                }
+                if (tournamentId.substring(0, 4) != "2023") {
+                    a(href = "/tourneyDetails?tourneyId=${(tournamentId.substring(0, 4).toInt() + 1).toString()}-${tournamentId.substring(5, tournamentId.length)}") {
+                        +" Next Year"
+                    }
+                }
+            }
+        }
+    }
+}
+
+public suspend fun PipelineContext<Unit, ApplicationCall>.tourneysForYear(
+    database: Database
+) {
+    val year = call.parameters["year"]!!
+    val allTourneys = database.matchQueries.selectAllTourneysFromAYear(year = year).executeAsList()
     call.respondHtml {
         body {
             h1 {
-                +"${firstMatch.tourney_name} ${firstMatch.tourney_date.substring(0, 4)}"
-                br {}
+                +"Tournaments in $year"
             }
-            +"Quarterfinals:"
-            br {}
-            for (qf in tourneysQFS) {
-                +"${idToName(qf.winner_id, database)} def ${idToName(qf.loser_id, database)} ${qf.score}"
-                br {}
+            if (year != "1968") {
+                a(href = "/tourneysForYear?year=${year.toInt() - 1}") {
+                    +"Previous year "
+                }
             }
-            br {}
-            +"Semifinals"
-            br {}
-            for (sf in tourneysSFS) {
-                +"${idToName(sf.winner_id, database)} def ${idToName(sf.loser_id, database)} ${sf.score}"
-                br {}
+            if (year != "2023") {
+                a(href = "/tourneysForYear?year=${year.toInt() + 1}") {
+                    +"Next Year"
+                }
             }
             br {}
-            +"Finals"
-            br {}
-            +"${idToName(tourneysF.winner_id, database)} def ${idToName(tourneysF.loser_id, database)} ${tourneysF.score}"
+            br {  }
+            for (tourney in allTourneys) {
+                val match = database.matchQueries.selectAllMatchesFromTourney(tourneyId = tourney).executeAsList()[0]
+                val name = match.tourney_name
+                val date = match.tourney_date
+                a(href = "/tourneyDetails?tourneyId=${tourney}") {
+                    +"$name ${date.substring(0, 4)}"
+                    br{}
+                }
+            }
+            br{}
+            a(href = "/") {
+                +"Home"
+            }
         }
     }
 }
