@@ -80,4 +80,13 @@ selectF:
 SELECT * FROM playerMatch WHERE tourney_id = :tourneyId AND round = "F";
 
 selectAllTourneysFromAYear:
-SELECT DISTINCT tourney_id FROM playerMatch WHERE tourney_date LIKE (:year || '%');
+SELECT DISTINCT tourney_id FROM playerMatch WHERE tourney_date LIKE (:year || '%') AND tourney_name NOT LIKE ('Davis' || '%');
+
+selectAllMajors:
+SELECT DISTINCT tourney_id FROM playerMatch WHERE (tourney_id LIKE "%-580" OR tourney_id LIKE "%-520" OR tourney_id LIKE "%-540" OR tourney_id LIKE "%-560") ORDER BY tourney_date;
+
+selectAllTourneys:
+SELECT DISTINCT tourney_id FROM playerMatch ORDER BY tourney_date;
+
+selectWinner:
+SELECT DISTINCT winner_id FROM playerMatch WHERE tourney_id = :id AND round = "F";

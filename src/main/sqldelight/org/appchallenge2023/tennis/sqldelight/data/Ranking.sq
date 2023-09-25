@@ -31,3 +31,5 @@ SELECT DISTINCT ranking_date FROM playerRanking ORDER BY ranking_date DESC LIMIT
 selectLast10RankingsForPlayer:
 SELECT * FROM playerRanking WHERE player = :player ORDER BY ranking_date DESC LIMIT 10;
 
+selectTop10:
+SELECT * FROM playerRanking WHERE ranking_date = :ranking_date AND rank <= 10 ORDER BY rank;
