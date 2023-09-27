@@ -52,23 +52,7 @@ fun Application.mainRouting() {
             tourneysForYear(database)
         }
         get("/styles.css") {
-            call.respondCss {
-                body {
-                    margin(0.px)
-                }
-                rule("h1.page-title") {
-                    color = Color.white
-                }
-                rule(".centeralignimage") {
-                    marginLeft = LinearDimension.auto
-                    marginRight = LinearDimension.auto
-                    width = LinearDimension("50%")
-                    display = Display.block
-                }
-                rule(".centeraligntext") {
-                    textAlign = TextAlign.center
-                }
-            }
+            css()
         }
     }
 }

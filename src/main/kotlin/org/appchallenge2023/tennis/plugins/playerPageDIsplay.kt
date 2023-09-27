@@ -20,6 +20,7 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
         call.respondHtml {
             head {
                 link(rel = "stylesheet", href = "styles.css")
+                link(rel = "stylesheet", href = "https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong")
             }
             body {
                 h1(classes = "centeraligntext") {
@@ -29,85 +30,94 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                 img(src = getPlayerImageUrl(player.wikidata_id.toString()), classes = "centeralignimage") {
                     this.width = "200"
                 }
-                h1 {
+                br{}
+                div(classes = "floatrightLP"){
                     +"Last 10 player rankings:"
-                }
-                for (ranking in last10Rankings) {
-                    +"#${ranking.rank} on ${dateToReadableFormat(ranking.ranking_date.toInt())} with ${ranking.points} points"
-                    br { }
-                }
-                h1 {
-                    +"Last 10 match results"
-                }
-                for (result in last10MatchResults) {
-                    var lineToPrint = ""
-                    if (result.winner_id == id) {
-                        val otherPlayer = database.playerQueries.selectPlayerWithId(result.loser_id).executeAsOne()
-                        +"Win vs "
-                        a(href = "/playerpage?searched=${otherPlayer.player_id}") {
-                            +"${otherPlayer.name_first} ${otherPlayer.name_last}"
-                        }
-                        +" in ${result.tourney_name}"
-                        +" on ${dateToReadableFormat(result.tourney_date.toInt())} (score:${result.score})"
-                        a(href = "/showH2H?player1=${player.player_id}&player2=${otherPlayer.player_id}") {
-                            +" [Show History]"
-                        }
-
-                    } else {
-                        val otherPlayer = database.playerQueries.selectPlayerWithId(result.winner_id).executeAsOne()
-                        +"Loss vs "
-                        a(href = "/playerpage?searched=${otherPlayer.player_id}") {
-                            +"${otherPlayer.name_first} ${otherPlayer.name_last}"
-                        }
-                        +" in ${result.tourney_name}"
-                        +" on ${dateToReadableFormat(result.tourney_date.toInt())} (score:${result.score})"
-                        a(href = "/showH2H?player1=${player.player_id}&player2=${otherPlayer.player_id}") {
-                            +" [Show History]"
-                        }
-                    }
-                    br { }
-                }
-                br { }
-                val majorWins = database.matchQueries.selectMajorWinsForPlayer(player = id).executeAsList()
-                val layout = getMajorsLayout(majorWins)
-                if (majorWins.isEmpty()) {
-                    +"This player has not won a major tournament"
                     br{}
-                } else {
-                    +"${majorWins.size} Major Champion"
-                    if (layout[4] != 0) {
-                        +", (${layout[4]} this year)"
+                    for (ranking in last10Rankings) {
+                        +"#${ranking.rank} on ${dateToReadableFormat(ranking.ranking_date.toInt())} with ${ranking.points} points"
+                        br { }
                     }
-                    br { }
-                    if (layout[0] != 0) {
-                        +"${layout[0]} at Australian Open"
-                    }
-                    if (layout[1] != 0) {
-                        +", ${layout[1]} at French Open"
-                    }
-                    if (layout[2] != 0) {
-                        +", ${layout[2]} at Wimbledon"
-                    }
-                    if (layout[3] != 0) {
-                        +", ${layout[3]} at US Open"
+                }
+                div(classes = "floatleftLP"){
+                    +"Last 10 Match results:"
+                    br{}
+                    for (result in last10MatchResults) {
+                        var lineToPrint = ""
+                        if (result.winner_id == id) {
+                            val otherPlayer = database.playerQueries.selectPlayerWithId(result.loser_id).executeAsOne()
+                            +"Win vs "
+                            a(href = "/playerpage?searched=${otherPlayer.player_id}") {
+                                +"${otherPlayer.name_first} ${otherPlayer.name_last}"
+                            }
+                            +" in ${result.tourney_name}"
+                            +" on ${dateToReadableFormat(result.tourney_date.toInt())} (score:${result.score})"
+                            a(href = "/showH2H?player1=${player.player_id}&player2=${otherPlayer.player_id}") {
+                                +" [Show History]"
+                            }
+
+                        } else {
+                            val otherPlayer = database.playerQueries.selectPlayerWithId(result.winner_id).executeAsOne()
+                            +"Loss vs "
+                            a(href = "/playerpage?searched=${otherPlayer.player_id}") {
+                                +"${otherPlayer.name_first} ${otherPlayer.name_last}"
+                            }
+                            +" in ${result.tourney_name}"
+                            +" on ${dateToReadableFormat(result.tourney_date.toInt())} (score:${result.score})"
+                            a(href = "/showH2H?player1=${player.player_id}&player2=${otherPlayer.player_id}") {
+                                +" [Show History]"
+                            }
+                        }
+                        br { }
                     }
                     br { }
                 }
-                br {}
-                val allTourneysWon = database.matchQueries.selectTourneyWinsForPlayer(player = id).executeAsList()
-                if (allTourneysWon.isEmpty()) {
-                    +"No singles titles won"
-                } else {
-                    +"${allTourneysWon.size} Singles Titles (${getTourneysWonThisYear(allTourneysWon)} this year)"
-                }
-                br {}
-                br {}
-                val topTenMatchesWon = database.matchQueries.selectWinsVsTop10(player = id).executeAsList()
-                val topTenWonThisYear  = getTop10MatchesCount(topTenMatchesWon)
-                if (topTenMatchesWon.isEmpty()) {
-                    +"No matches won vs a top 10 player"
-                } else {
-                    +"${topTenMatchesWon.size} wins vs Top 10 Opponents (${topTenWonThisYear} this year)"
+                div(classes = "centeraligntext trirong") {
+                    +"."
+                    br{}
+                    val majorWins = database.matchQueries.selectMajorWinsForPlayer(player = id).executeAsList()
+                    val layout = getMajorsLayout(majorWins)
+                    if (majorWins.isEmpty()) {
+                        +"This player has not won a major tournament"
+                        br{}
+                    } else {
+                        +"${majorWins.size} Major Champion"
+                        if (layout[4] != 0) {
+                            +", (${layout[4]} this year)"
+                        }
+                        br { }
+                        if (layout[0] != 0) {
+                            +"${layout[0]} at Australian Open"
+                        }
+                        if (layout[1] != 0) {
+                            +", ${layout[1]} at French Open"
+                        }
+                        if (layout[2] != 0) {
+                            +", ${layout[2]} at Wimbledon"
+                        }
+                        if (layout[3] != 0) {
+                            +", ${layout[3]} at US Open"
+                        }
+                        br { }
+                    }
+                    br {}
+                    val allTourneysWon = database.matchQueries.selectTourneyWinsForPlayer(player = id).executeAsList()
+                    if (allTourneysWon.isEmpty()) {
+                        +"No singles titles won"
+                    } else {
+                        +"${allTourneysWon.size} Singles Titles (${getTourneysWonThisYear(allTourneysWon)} this year)"
+                    }
+                    br {}
+                    br {}
+                    val topTenMatchesWon = database.matchQueries.selectWinsVsTop10(player = id).executeAsList()
+                    val topTenWonThisYear  = getTop10MatchesCount(topTenMatchesWon)
+                    if (topTenMatchesWon.isEmpty()) {
+                        +"No matches won vs a top 10 player"
+                    } else {
+                        +"${topTenMatchesWon.size} wins vs Top 10 Opponents (${topTenWonThisYear} this year)"
+                    }
+                    br{}
+                    br{}
                 }
                 br{}
                 br{}
