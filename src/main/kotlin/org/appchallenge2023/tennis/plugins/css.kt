@@ -33,16 +33,62 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.css() {
         rule(".trirong") {
             fontFamily = "Trirong"
         }
-        // player page
-        rule(".floatrightPP") {
-            float = Float.right
-            width = LinearDimension("40%")
 
-        }
-        rule(".floatleftPP") {
+
+        // player page
+        rule(".imageResizePP") {
+            width = LinearDimension("30%")
             float = Float.left
-            width = LinearDimension("60%")
+            marginLeft = LinearDimension("5%")
         }
+        rule(".border1PP") {
+            borderStyle = BorderStyle.solid
+            borderColor = Color.green
+            padding = "2%"
+            width = LinearDimension("37%")
+            backgroundColor = Color.lightGray
+            borderWidth = LinearDimension("10px")
+            float  =  Float.left
+            marginLeft = LinearDimension("10%")
+        }
+        rule(".border2PP") {
+            borderStyle = BorderStyle.solid
+            borderColor = Color.green
+            padding = "2%"
+            width = LinearDimension("37%")
+            backgroundColor = Color.lightGray
+            borderWidth = LinearDimension("10px")
+            float  =  Float.left
+            marginLeft = LinearDimension("10%")
+            marginBottom = LinearDimension("2%")
+            marginRight = LinearDimension("2%")
+        }
+        rule(".border3PP") {
+            borderStyle = BorderStyle.solid
+            borderColor = Color.green
+            padding = "2%"
+            width = LinearDimension("37%")
+            backgroundColor = Color.lightGray
+            borderWidth = LinearDimension("10px")
+            float  =  Float.left
+            marginLeft = LinearDimension("45%")
+            marginTop = LinearDimension("2%")
+        }
+        rule(".homeBorderPP") {
+            borderStyle = BorderStyle.solid
+            borderColor = Color.green
+            padding = "2%"
+            width = LinearDimension("10%")
+            backgroundColor = Color.lightGray
+            borderWidth = LinearDimension("10px")
+            marginTop = LinearDimension("23%")
+        }
+
+
+
+
+
+
         // landing page
         rule(".border1LP") {
             borderStyle = BorderStyle.solid

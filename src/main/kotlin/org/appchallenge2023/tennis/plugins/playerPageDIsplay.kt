@@ -27,19 +27,17 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                     +"${player.name_first} ${player.name_last}"
                 }
                 br { }
-                img(src = getPlayerImageUrl(player.wikidata_id.toString()), classes = "centeralignimage") {
-                    this.width = "200"
-                }
+
                 br{}
-                div(classes = "floatrightPP"){
-                    +"Last 10 player rankings:"
-                    br{}
-                    for (ranking in last10Rankings) {
-                        +"#${ranking.rank} on ${dateToReadableFormat(ranking.ranking_date.toInt())} with ${ranking.points} points"
-                        br { }
+                div(classes = "imageResizePP") {
+                    img(src = getPlayerImageUrl(player.wikidata_id.toString()), classes = "centeralignimage") {
+                        this.width = "200"
                     }
                 }
-                div(classes = "floatleftPP"){
+                a(href = "/", classes = "homeBorderPP") {
+                    +"Home page"
+                }
+                div(classes = "border2PP"){
                     +"Last 10 Match results:"
                     br{}
                     for (result in last10MatchResults) {
@@ -72,9 +70,15 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                     }
                     br { }
                 }
-                div(classes = "centeraligntext trirong") {
-                    +"."
+                div(classes = "border1PP"){
+                    +"Last 10 player rankings:"
                     br{}
+                    for (ranking in last10Rankings) {
+                        +"#${ranking.rank} on ${dateToReadableFormat(ranking.ranking_date.toInt())} with ${ranking.points} points"
+                        br { }
+                    }
+                }
+                div(classes = "border3PP") {
                     val majorWins = database.matchQueries.selectMajorWinsForPlayer(player = id).executeAsList()
                     val layout = getMajorsLayout(majorWins)
                     if (majorWins.isEmpty()) {
@@ -85,7 +89,7 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                         if (layout[4] != 0) {
                             +", (${layout[4]} this year)"
                         }
-                        br { }
+
                         if (layout[0] != 0) {
                             +"${layout[0]} at Australian Open"
                         }
@@ -116,14 +120,9 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                     } else {
                         +"${topTenMatchesWon.size} wins vs Top 10 Opponents (${topTenWonThisYear} this year)"
                     }
-                    br{}
-                    br{}
+
                 }
-                br{}
-                br{}
-                a(href = "/", classes = "centeraligntext") {
-                    +"Home page"
-                }
+
             }
         }
     } catch (e: NullPointerException) {
