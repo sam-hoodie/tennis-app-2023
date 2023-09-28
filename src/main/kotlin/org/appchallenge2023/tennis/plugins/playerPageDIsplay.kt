@@ -31,7 +31,7 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                     this.width = "200"
                 }
                 br{}
-                div(classes = "floatrightLP"){
+                div(classes = "floatrightPP"){
                     +"Last 10 player rankings:"
                     br{}
                     for (ranking in last10Rankings) {
@@ -39,7 +39,7 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                         br { }
                     }
                 }
-                div(classes = "floatleftLP"){
+                div(classes = "floatleftPP"){
                     +"Last 10 Match results:"
                     br{}
                     for (result in last10MatchResults) {

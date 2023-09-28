@@ -6,6 +6,7 @@ import kotlinx.css.*
 import kotlinx.css.Float
 import org.appchallenge2023.tennis.respondCss
 import org.appchallenge2023.tennis.sqldelight.data.Database
+import javax.sound.sampled.Line
 
 public suspend fun PipelineContext<Unit, ApplicationCall>.css() {
     call.respondCss {
@@ -25,18 +26,63 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.css() {
         rule(".rightaligntext") {
             textAlign = TextAlign.right
         }
-        rule(".floatrightLP") {
+        rule(".margin") {
+            margin = "3%"
+        }
+        // fonts
+        rule(".trirong") {
+            fontFamily = "Trirong"
+        }
+        // player page
+        rule(".floatrightPP") {
             float = Float.right
             width = LinearDimension("40%")
 
         }
-        rule(".floatleftLP") {
+        rule(".floatleftPP") {
             float = Float.left
             width = LinearDimension("60%")
         }
         // landing page
-        rule(".trirong") {
-            fontFamily = "Trirong"
+        rule(".border1LP") {
+            borderStyle = BorderStyle.solid
+            borderColor = Color.green
+            padding = "2%"
+            width = LinearDimension("25%")
+            backgroundColor = Color.lightGray
+            borderWidth = LinearDimension("10px")
+            float = Float.left
+            paddingTop = LinearDimension("6%")
+            paddingBottom = LinearDimension("6%")
+        }
+        rule(".border2LP") {
+            borderStyle = BorderStyle.solid
+            borderColor = Color.green
+            padding = "2%"
+            width = LinearDimension("25%")
+            backgroundColor = Color.lightGray
+            borderWidth = LinearDimension("10px")
+            float = Float.left
+            marginLeft = LinearDimension("3%")
+            marginRight = LinearDimension("3%")
+        }
+        rule(".border3LP") {
+            borderStyle = BorderStyle.solid
+            borderColor = Color.green
+            padding = "2%"
+            width = LinearDimension("25%")
+            backgroundColor = Color.lightGray
+            borderWidth = LinearDimension("10px")
+            float = Float.left
+        }
+        rule(".border4LP") {
+            borderStyle = BorderStyle.solid
+            borderColor = Color.green
+            padding = "2%"
+            width = LinearDimension("25%")
+            backgroundColor = Color.lightGray
+            borderWidth = LinearDimension("10px")
+            marginTop = LinearDimension("23%")
         }
     }
 }
