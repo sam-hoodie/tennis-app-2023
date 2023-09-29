@@ -33,3 +33,6 @@ SELECT * FROM playerRanking WHERE player = :player ORDER BY ranking_date DESC LI
 
 selectTop10:
 SELECT * FROM playerRanking WHERE ranking_date = :ranking_date AND rank <= 10 ORDER BY rank;
+
+selectDatesForYear:
+SELECT DISTINCT ranking_date FROM playerRanking WHERE ranking_date LIKE (:year || '%') ORDER BY ranking_date;

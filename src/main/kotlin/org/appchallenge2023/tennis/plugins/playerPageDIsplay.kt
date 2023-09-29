@@ -23,8 +23,13 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                 link(rel = "stylesheet", href = "https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong")
             }
             body {
-                h1(classes = "centeraligntext") {
-                    +"${player.name_first} ${player.name_last}"
+                div(classes = "borderTitle centeraligntext") {
+                    h1() {
+                        +"${player.name_first} ${player.name_last}"
+                    }
+                    a(href = "/") {
+                        +"Home page"
+                    }
                 }
                 br { }
 
@@ -33,9 +38,6 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                     img(src = getPlayerImageUrl(player.wikidata_id.toString()), classes = "centeralignimage") {
                         this.width = "200"
                     }
-                }
-                a(href = "/", classes = "homeBorderPP") {
-                    +"Home page"
                 }
                 div(classes = "border2PP"){
                     +"Last 10 Match results:"
@@ -89,7 +91,7 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                         if (layout[4] != 0) {
                             +", (${layout[4]} this year)"
                         }
-
+                        +". "
                         if (layout[0] != 0) {
                             +"${layout[0]} at Australian Open"
                         }

@@ -18,7 +18,9 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.landingPage(
                 +"Title (undecided)"
             }
             div(classes = "border1LP centeraligntext") {
-                +"Last four majors:"
+                h1 {
+                    +"Last four majors:"
+                }
                 br {}
                 val allMajors = database.matchQueries.selectAllMajors().executeAsList()
                 val last4Majors = allMajors.subList(allMajors.size - 4, allMajors.size)
@@ -37,7 +39,9 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.landingPage(
                 }
             }
             div(classes = "border2LP centeraligntext") {
-                +"Last 10 tournaments:"
+                h1 {
+                    +"Last 10 tournaments:"
+                }
                 br {}
                 val allTourneys = database.matchQueries.selectAllTourneys().executeAsList()
                 val last10Tourneys = allTourneys.subList(allTourneys.size - 10, allTourneys.size)
@@ -62,7 +66,9 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.landingPage(
             div(classes = "border3LP centeraligntext") {
                 val lastRankingDate = database.rankingQueries.selectLast10Rankings().executeAsList()[0]
                 val top10 = database.rankingQueries.selectTop10(lastRankingDate).executeAsList()
-                +"The most recent top 10 players are:"
+                h1 {
+                    +"The most recent top 10 players are:"
+                }
                 br {}
                 for (player in top10) {
                     val id = player.player
@@ -74,8 +80,8 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.landingPage(
                     +" with ${player.points} points"
                     br { }
                 }
-                a(href = "/showLast10Top100") {
-                    +"Show top 100 players"
+                a(href = "/rankingDatesForYear?year=2023") {
+                    +"Show All Rankings"
                 }
             }
             div(classes = "border4LP centeraligntext"){
