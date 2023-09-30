@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS tennisPlayer (
   dob TEXT,
   country TEXT,
   height TEXT,
-  wikidata_id TEXT
+  wikidata_id TEXT,
+  highest_ranking INTEGER
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS tennisPlayer_player_id ON tennisPlayer(player_id);
@@ -16,11 +17,11 @@ SELECT *
 FROM tennisPlayer;
 
 insertPlayer:
-INSERT INTO tennisPlayer(player_id, name_first, name_last, hand, dob, country, height, wikidata_id)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO tennisPlayer(player_id, name_first, name_last, hand, dob, country, height, wikidata_id, highest_ranking)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 insertPlayerObject:
-INSERT INTO tennisPlayer(player_id, name_first, name_last, hand, dob, country, height, wikidata_id)
+INSERT INTO tennisPlayer(player_id, name_first, name_last, hand, dob, country, height, wikidata_id, highest_ranking)
 VALUES ?;
 
 selectPlayerWithId:

@@ -36,3 +36,6 @@ SELECT * FROM playerRanking WHERE ranking_date = :ranking_date AND rank <= 10 OR
 
 selectDatesForYear:
 SELECT DISTINCT ranking_date FROM playerRanking WHERE ranking_date LIKE (:year || '%') ORDER BY ranking_date;
+
+selectHighestRanking:
+SELECT MIN(rank) FROM playerRanking WHERE player = :player;

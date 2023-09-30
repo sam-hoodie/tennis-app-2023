@@ -39,10 +39,15 @@ fun readAllPlayers() : List<TennisPlayer> {
 fun populatePlayersDatabase(driver: SqlDriver, players: List<TennisPlayer>) {
     val database = Database(driver)
     val playerQueries: PlayerQueries = database.playerQueries
+    val rankingQueries: RankingQueries = database.rankingQueries
 
     val start = System.currentTimeMillis()
     for (player in players) {
-        playerQueries.insertPlayerObject(player)
+        // Get ranking
+        val ranking = rankingQueries.selectHighestRanking(player.player_id).executeAsOne().MIN ?: 10000
+        val toInsert = player.copy(highest_ranking = ranking)
+        println("Inserting ${toInsert.player_id} with ${toInsert.highest_ranking}")
+        playerQueries.insertPlayerObject(toInsert)
     }
     val end = System.currentTimeMillis()
     println("Inserted players in " + (end - start) + " ms")

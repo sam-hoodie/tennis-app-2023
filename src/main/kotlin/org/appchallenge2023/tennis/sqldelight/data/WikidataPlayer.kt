@@ -5,18 +5,42 @@ import org.wikidata.wdtk.datamodel.interfaces.StringValue
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataFetcher
 import java.security.MessageDigest
 
+fun ItemDocument.getFromStatement(): String? {
+    val imgStatement = this.findStatement("P18") ?: return null
+    val imgClaim = imgStatement.claim
+    val imgSnak = imgClaim.mainSnak
+    val imgValue = imgSnak.value
+    var imgAddress = (imgValue as StringValue).string
+    imgAddress = imgAddress.replace(' ', '_')
+//    println(imgAddress)
+//    println(md5(imgAddress).toHex())
+//    println("https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/$imgAddress")
+    return "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/$imgAddress"
+}
+
+fun ItemDocument.getFromStatements(): String? {
+    val imgStatementGroup = this.findStatementGroup("P18") ?: return null
+    val imgClaim = imgStatementGroup.statements.first().claim
+    val imgSnak = imgClaim.mainSnak
+    val imgValue = imgSnak.value
+    var imgAddress = (imgValue as StringValue).string
+    imgAddress = imgAddress.replace(' ', '_')
+//    println(imgAddress)
+//    println(md5(imgAddress).toHex())
+//    println("https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/$imgAddress")
+    return "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/$imgAddress"
+}
+
+fun ItemDocument.get(): String? {
+    return this.getFromStatement() ?: this.getFromStatements()
+}
+
 fun getPlayerImageUrl(playerWikidataId: String): String? {
     try {
         val wbdf = WikibaseDataFetcher.getWikidataDataFetcher()
         val entity = wbdf.getEntityDocument(playerWikidataId)
         if (entity is ItemDocument) {
-            val imgStatement = entity.findStatement("P18")
-            val imgClaim = imgStatement.claim
-            val imgSnak = imgClaim.mainSnak
-            val imgValue = imgSnak.value
-            var imgAddress = (imgValue as StringValue).string
-            imgAddress = imgAddress.replace(' ', '_')
-            return "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/$imgAddress"
+            return entity.get()
         }
     } catch (t: Throwable) {
         return null
@@ -25,7 +49,7 @@ fun getPlayerImageUrl(playerWikidataId: String): String? {
 }
 
 fun main() {
-    println(getPlayerImageUrl("Q5812"))
+    println(getPlayerImageUrl("Q4189526"))
 }
 
 fun md5(str: String): ByteArray = MessageDigest.getInstance("MD5").digest(str.toByteArray(kotlin.text.Charsets.UTF_8))
