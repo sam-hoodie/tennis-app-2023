@@ -15,7 +15,7 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.showTop100(
         head {
             link(rel = "stylesheet", href = "styles.css")
         }
-        body {
+        body(classes = "AliceBlue") {
             div(classes = "borderTitleTO centeraligntext") {
                 h1(classes = "centeraligntext") {
                     if (date != null) {
@@ -96,7 +96,7 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.rankingDatesForYear(
         head {
             link(rel = "stylesheet", href = "styles.css")
         }
-        body {
+        body(classes = "AliceBlue") {
             div(classes = "borderTitle centeraligntext") {
                 h1 {
                     +"Rank Weeks for $yearToFind"

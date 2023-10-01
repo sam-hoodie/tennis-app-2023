@@ -28,7 +28,7 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.tourneyDetails(
             }
         } else {
             val firstMatch = tourneyMatches[0]
-            body {
+            body(classes = "AliceBlue") {
                 div(classes = "borderTitle centeraligntext") {
                     h1 {
                         +"${firstMatch.tourney_name} ${firstMatch.tourney_date.substring(0, 4)}"
@@ -38,6 +38,7 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.tourneyDetails(
                     a(href = "/tourneyDetails?tourneyId=${(tournamentId.substring(0, 4).toInt() - 1).toString()}-${tournamentId.substring(5, tournamentId.length)}") {
                         +"Previous Year"
                     }
+                    br{}
                     if (tournamentId.substring(0, 4) != "2023") {
                         a(href = "/tourneyDetails?tourneyId=${(tournamentId.substring(0, 4).toInt() + 1).toString()}-${tournamentId.substring(5, tournamentId.length)}") {
                             +" Next Year"
@@ -101,7 +102,7 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.tourneysForYear(
         head {
             link(rel = "stylesheet", href = "styles.css")
         }
-        body {
+        body(classes = "AliceBlue") {
             div(classes = "borderTitle centeraligntext") {
                 h1 {
                     +"Tournaments in $year"

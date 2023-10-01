@@ -28,4 +28,4 @@ selectPlayerWithId:
 SELECT * FROM tennisPlayer WHERE player_id = :player_id;
 
 selectPlayersWithName:
-SELECT * FROM tennisPlayer WHERE name_first LIKE '%' || :name || '%' OR name_last LIKE '%' || :name || '%';
+SELECT * FROM tennisPlayer WHERE name_first LIKE '%' || :name || '%' OR name_last LIKE '%' || :name || '%' ORDER BY highest_ranking;

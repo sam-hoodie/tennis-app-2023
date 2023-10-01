@@ -13,9 +13,9 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.landingPage(
         head {
             link(rel = "stylesheet", href = "styles.css")
         }
-        body(classes = "margin") {
+        body(classes = "margin AliceBlue") {
             h1(classes = "centeraligntext") {
-                +"Title (undecided)"
+                +"Tennis Explorer"
             }
             div(classes = "border1LP centeraligntext") {
                 h1 {
@@ -27,7 +27,7 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.landingPage(
                 for (major in last4Majors) {
                     val winner = database.matchQueries.selectWinner(id = major).executeAsOne()
                     val winnerInfo = database.playerQueries.selectPlayerWithId(winner).executeAsOne()
-                    val tourneyInfo = database.matchQueries.selectAllMatchesFromTourney(major).executeAsList()[0]
+                    val tourneyInfo = database.matchQueries.selectF(major).executeAsOne()
                     a(href = "/tourneyDetails?tourneyId=${major}") {
                         +"${tourneyInfo.tourney_name} ${tourneyInfo.tourney_date.substring(0, 4)}"
                     }
@@ -43,12 +43,11 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.landingPage(
                     +"Last 10 tournaments:"
                 }
                 br {}
-                val allTourneys = database.matchQueries.selectAllTourneys().executeAsList()
-                val last10Tourneys = allTourneys.subList(allTourneys.size - 10, allTourneys.size)
+                val last10Tourneys = database.matchQueries.selectLast10Tourneys().executeAsList()
                 for (tourney in last10Tourneys) {
                     val winner = database.matchQueries.selectWinner(id = tourney).executeAsOne()
                     val winnerInfo = database.playerQueries.selectPlayerWithId(winner).executeAsOne()
-                    val tourneyInfo = database.matchQueries.selectAllMatchesFromTourney(tourney).executeAsList()[0]
+                    val tourneyInfo = database.matchQueries.selectF(tourney).executeAsOne()
                     a(href = "/tourneyDetails?tourneyId=${tourney}") {
                         +"${tourneyInfo.tourney_name} ${tourneyInfo.tourney_date.substring(0, 4)}"
 
@@ -63,8 +62,9 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.landingPage(
                     +"Show all tournaments from this year"
                 }
             }
+
             div(classes = "border3LP centeraligntext") {
-                val lastRankingDate = database.rankingQueries.selectLast10Rankings().executeAsList()[0]
+                val lastRankingDate = database.rankingQueries.selectLastRankingDate().executeAsOne().MAX!!
                 val top10 = database.rankingQueries.selectTop10(lastRankingDate).executeAsList()
                 h1 {
                     +"The most recent top 10 players are:"
@@ -84,10 +84,12 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.landingPage(
                     +"Show All Rankings"
                 }
             }
+
             div(classes = "border4LP centeraligntext"){
                 +"Search player by name:"
                 form(action = "/playerlist", method = FormMethod.get) {
                     input(type = InputType.text, name = "searched")
+                    +" "
                     button {
                         +"Search"
                     }

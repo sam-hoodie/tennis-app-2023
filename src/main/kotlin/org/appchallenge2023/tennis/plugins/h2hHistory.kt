@@ -18,7 +18,11 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.showH2HHistory(
     val p2Info = database.playerQueries.selectPlayerWithId(player_id = p2Id).executeAsOne()
     if (allH2H.isEmpty()) {
         call.respondHtml {
-            +"There are no previous matches between ${p1Info.name_first} ${p1Info.name_last} and ${p2Info.name_first} ${p2Info.name_last}"
+            body {
+                div(classes = "LightCoral") {
+                    +"There are no previous matches between ${p1Info.name_first} ${p1Info.name_last} and ${p2Info.name_first} ${p2Info.name_last}"
+                }
+            }
         }
         return
     }
@@ -40,7 +44,7 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.showH2HHistory(
         head {
             link(rel = "stylesheet", href = "styles.css")
         }
-        body {
+        body(classes = "AliceBlue") {
             div(classes = "borderTitleH2H centeraligntext") {
                 h1 {
                     +"${p1Info.name_first} ${p1Info.name_last} vs ${p2Info.name_first} ${p2Info.name_last}"

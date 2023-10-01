@@ -7,6 +7,13 @@ CREATE TABLE IF NOT EXISTS playerRanking (
 
 CREATE INDEX IF NOT EXISTS playerRanking_player ON playerRanking(player);
 
+CREATE TABLE IF NOT EXISTS playerRankingDate (
+  ranking_date TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS playerRankingDate_ranking_date ON playerRankingDate(ranking_date);
+
+
 selectAllRankings:
 SELECT *
 FROM playerRanking;
@@ -39,3 +46,19 @@ SELECT DISTINCT ranking_date FROM playerRanking WHERE ranking_date LIKE (:year |
 
 selectHighestRanking:
 SELECT MIN(rank) FROM playerRanking WHERE player = :player;
+
+selectAllRankingDates:
+SELECT *
+FROM playerRankingDate;
+
+insertRankingDate:
+INSERT INTO playerRankingDate(ranking_date)
+VALUES (?);
+
+insertRankingDateObject:
+INSERT INTO playerRankingDate(ranking_date)
+VALUES ?;
+
+selectLastRankingDate:
+SELECT MAX(ranking_date) FROM playerRankingDate;
+

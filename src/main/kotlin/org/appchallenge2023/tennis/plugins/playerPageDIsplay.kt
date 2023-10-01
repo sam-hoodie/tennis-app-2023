@@ -2,7 +2,9 @@ package org.appchallenge2023.tennis.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.html.*
+import io.ktor.server.response.*
 import io.ktor.util.pipeline.*
+import kotlinx.css.h1
 import kotlinx.html.*
 import org.appchallenge2023.tennis.sqldelight.data.Database
 import org.appchallenge2023.tennis.sqldelight.data.PlayerMatch
@@ -22,7 +24,7 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                 link(rel = "stylesheet", href = "styles.css")
                 link(rel = "stylesheet", href = "https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong")
             }
-            body {
+            body(classes = "AliceBlue") {
                 div(classes = "borderTitle centeraligntext") {
                     h1() {
                         +"${player.name_first} ${player.name_last}"
@@ -129,7 +131,7 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
         }
     } catch (e: NullPointerException) {
         call.respondHtml {
-            body {
+            body(classes = "LightCoral") {
                 +"No matching player found"
                 br { }
                 a(href = "/", classes = "centeraligntext") {
@@ -137,6 +139,52 @@ suspend fun PipelineContext<Unit, ApplicationCall>.showPlayer(
                 }
             }
 
+        }
+    }
+}
+
+public suspend fun PipelineContext<Unit, ApplicationCall>.showPlayerList(
+    database: Database
+) {
+    val search = call.parameters.get("searched")
+    val players = database.playerQueries.selectPlayersWithName(name = search.toString()).executeAsList()
+    if (players.isEmpty()) {
+        call.respondHtml {
+            body(classes = "LightCoral") {
+                +"There are no players that match this name!"
+                br { }
+                a(href = "/", classes = "centeraligntext") {
+                    +"Home page"
+                }
+            }
+        }
+    } else if (players.size == 1) {
+        val playerId = players[0].player_id
+        call.respondRedirect(url = "/playerpage?searched=${playerId}")
+    } else {
+        call.respondHtml {
+            head {
+                link(rel = "stylesheet", href = "styles.css")
+            }
+            body(classes = "AliceBlue") {
+                div(classes = "borderTitlePL centeraligntext") {
+                    h1 {
+                        +"Search results for \"$search\""
+                    }
+                    a(href = "/") {
+                        +"Home"
+                    }
+                }
+
+                div(classes = "borderPL centeraligntext") {
+                    for (player in players) {
+                        a(href = "/playerpage?searched=${player.player_id}") {
+                            +"${player.name_first} ${player.name_last}"
+                        }
+                        br { }
+                    }
+                }
+            }
         }
     }
 }

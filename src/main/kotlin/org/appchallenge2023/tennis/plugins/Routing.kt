@@ -54,37 +54,7 @@ fun Application.mainRouting() {
     }
 }
 
-public suspend fun PipelineContext<Unit, ApplicationCall>.showPlayerList(
-    database: Database
-) {
-    val search = call.parameters.get("searched")
-    val players = database.playerQueries.selectPlayersWithName(name = search.toString()).executeAsList()
-    if (players.isEmpty()) {
-        call.respondHtml {
-            body {
-                +"There are no players that match this name!"
-                br { }
-                a(href = "/", classes = "centeraligntext") {
-                    +"Home page"
-                }
-            }
-        }
-    } else if (players.size == 1) {
-        val playerId = players[0].player_id
-        call.respondRedirect(url = "/playerpage?searched=${playerId}")
-    } else {
-        call.respondHtml {
-            for (player in players) {
-                body {
-                    a(href = "/playerpage?searched=${player.player_id}") {
-                        +"${player.name_first} ${player.name_last}"
-                    }
-                    br { }
-                }
-            }
-        }
-    }
-}
+
 
 
 

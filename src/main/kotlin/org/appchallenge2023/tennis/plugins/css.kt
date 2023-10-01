@@ -31,15 +31,15 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.css() {
         }
         rule(".borderTitle") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("20%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             paddingTop = LinearDimension("0.3%")
             paddingBottom = LinearDimension("0.3%")
             margin = "1%"
             marginLeft = LinearDimension("34%")
+            backgroundColor = Color.lightGreen
+            borderColor = Color.maroon
         }
         // fonts
         rule(".trirong") {
@@ -55,139 +55,140 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.css() {
         }
         rule(".border1PP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("37%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float  =  Float.left
             marginLeft = LinearDimension("10%")
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         rule(".border2PP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("37%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float  =  Float.left
             marginLeft = LinearDimension("10%")
             marginBottom = LinearDimension("2%")
             marginRight = LinearDimension("2%")
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         rule(".border3PP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("37%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float  =  Float.left
             marginLeft = LinearDimension("45%")
             marginTop = LinearDimension("2%")
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         rule(".homeBorderPP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("10%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             marginTop = LinearDimension("23%")
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
 
         // landing page
         rule(".border1LP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("25%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float = Float.left
-            paddingTop = LinearDimension("6%")
+            paddingTop = LinearDimension("2%")
             paddingBottom = LinearDimension("6%")
+            marginLeft = LinearDimension("2%")
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         rule(".border2LP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("25%")
-            backgroundColor = Color.lightGray
+            backgroundColor = Color.khaki
             borderWidth = LinearDimension("10px")
             float = Float.left
             marginLeft = LinearDimension("3%")
             marginRight = LinearDimension("3%")
+            borderColor = Color.darkSlateBlue
         }
         rule(".border3LP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("25%")
-            backgroundColor = Color.lightGray
+            backgroundColor = Color.khaki
             borderWidth = LinearDimension("10px")
             float = Float.left
+            borderColor = Color.darkSlateBlue
         }
         rule(".border4LP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("25%")
-            backgroundColor = Color.lightGray
+            backgroundColor = Color.khaki
             borderWidth = LinearDimension("10px")
             marginTop = LinearDimension("28%")
-            marginLeft = LinearDimension("33%")
+            marginLeft = LinearDimension("35%")
+            borderColor = Color.darkSlateBlue
         }
         // all tournaments
         rule(".border1TP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("15%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float = Float.left
             paddingTop = LinearDimension("1%")
             paddingBottom = LinearDimension("2%")
             margin = "1%"
             marginLeft = LinearDimension("6%")
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
 
         }
         rule(".border2TP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("15%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float = Float.left
             paddingTop = LinearDimension("1%")
             paddingBottom = LinearDimension("2%")
             margin = "1%"
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         rule(".border3TP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("15%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float = Float.left
             paddingTop = LinearDimension("1%")
             paddingBottom = LinearDimension("2%")
             margin = "1%"
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         rule(".border4TP") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("15%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float = Float.left
             paddingTop = LinearDimension("1%")
             paddingBottom = LinearDimension("2%")
             margin = "1%"
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         //  tournament details
         rule(".qfs") {
@@ -231,16 +232,16 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.css() {
         // h2h
         rule(".h2hInfo") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("30%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float = Float.left
             paddingTop = LinearDimension("1%")
             paddingBottom = LinearDimension("2%")
             marginLeft = LinearDimension("-8%")
             marginRight = LinearDimension("1%")
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         rule(".h2hImage1") {
             width = LinearDimension("30%")
@@ -254,79 +255,110 @@ public suspend fun PipelineContext<Unit, ApplicationCall>.css() {
         }
         rule(".borderTitleH2H") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("30%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             paddingTop = LinearDimension("0.3%")
             paddingBottom = LinearDimension("0.3%")
             margin = "1%"
             marginLeft = LinearDimension("31%")
+            backgroundColor = Color.lightGreen
+            borderColor = Color.maroon
         }
         // rankings
         rule(".border1RD") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("16%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float = Float.left
             paddingTop = LinearDimension("1%")
             paddingBottom = LinearDimension("2%")
             margin = "1%"
             marginLeft = LinearDimension("4%")
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
 
         }
         rule(".border2RD") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("16%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float = Float.left
             paddingTop = LinearDimension("1%")
             paddingBottom = LinearDimension("2%")
             margin = "1%"
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         rule(".border3RD") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("16%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float = Float.left
             paddingTop = LinearDimension("1%")
             paddingBottom = LinearDimension("2%")
             margin = "1%"
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         rule(".border4RD") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("16%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             float = Float.left
             paddingTop = LinearDimension("1%")
             paddingBottom = LinearDimension("2%")
             margin = "1%"
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
         }
         rule(".borderTitleTO") {
             borderStyle = BorderStyle.solid
-            borderColor = Color.green
             padding = "2%"
             width = LinearDimension("50%")
-            backgroundColor = Color.lightGray
             borderWidth = LinearDimension("10px")
             paddingTop = LinearDimension("0.3%")
             paddingBottom = LinearDimension("0.3%")
             margin = "1%"
             marginLeft = LinearDimension("23%")
+            backgroundColor = Color.lightGreen
+            borderColor = Color.maroon
         }
-    }
+        // player list
+        rule(".borderTitlePL") {
+            borderStyle = BorderStyle.solid
+            padding = "2%"
+            width = LinearDimension("35%")
+            borderWidth = LinearDimension("10px")
+            paddingTop = LinearDimension("0.3%")
+            paddingBottom = LinearDimension("0.3%")
+            margin = "1%"
+            marginLeft = LinearDimension("28%")
+            backgroundColor = Color.lightGreen
+            borderColor = Color.maroon
+        }
+        rule(".borderPL") {
+            borderStyle = BorderStyle.solid
+            width = LinearDimension("16%")
+            borderWidth = LinearDimension("10px")
+            float = Float.left
+            padding = "2%"
+            textAlign = TextAlign.center
+            marginTop = LinearDimension("2%")
+            marginLeft = LinearDimension("37%")
+            borderColor = Color.darkSlateBlue
+            backgroundColor = Color.khaki
+        }
+        rule(".AliceBlue") {
+            backgroundColor = Color.aliceBlue
+        }
+        rule(".LightCoral") {
+            backgroundColor = Color.lightCoral
+        }
 
+    }
 }
