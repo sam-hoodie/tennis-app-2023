@@ -5,8 +5,6 @@ import io.ktor.util.pipeline.*
 import kotlinx.css.*
 import kotlinx.css.Float
 import org.appchallenge2023.tennis.respondCss
-import org.appchallenge2023.tennis.sqldelight.data.Database
-import javax.sound.sampled.Line
 
 public suspend fun PipelineContext<Unit, ApplicationCall>.css() {
     call.respondCss {

@@ -12,7 +12,7 @@ fun main() {
     val players: List<TennisPlayer> = readAllPlayers()
     println("Read ${players.size} players")
 
-    val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:test.db")
+    val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:atp.db")
     Database.Schema.create(driver)
     populatePlayersDatabase(driver, players)
 }

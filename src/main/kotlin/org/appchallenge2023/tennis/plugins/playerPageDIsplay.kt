@@ -4,7 +4,6 @@ import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
 import io.ktor.util.pipeline.*
-import kotlinx.css.h1
 import kotlinx.html.*
 import org.appchallenge2023.tennis.sqldelight.data.Database
 import org.appchallenge2023.tennis.sqldelight.data.PlayerMatch

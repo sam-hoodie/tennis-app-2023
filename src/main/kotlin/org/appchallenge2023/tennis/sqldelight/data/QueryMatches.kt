@@ -2,10 +2,9 @@ package org.appchallenge2023.tennis.sqldelight.data
 
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import javax.xml.crypto.Data
 
 fun main() {
-    val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:test.db")
+    val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:atp.db")
     Database.Schema.create(driver)
 
 //    queryMatches(driver, 101414)

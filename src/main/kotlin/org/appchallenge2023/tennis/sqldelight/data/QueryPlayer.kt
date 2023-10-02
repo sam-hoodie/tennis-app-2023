@@ -5,7 +5,7 @@ import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 
 
 fun main() {
-    val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:test.db")
+    val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:atp.db")
     Database.Schema.create(driver)
 
     queryPlayer(driver, 104925)

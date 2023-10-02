@@ -6,7 +6,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 fun main() {
-    val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:test.db")
+    val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:atp.db")
     Database.Schema.create(driver)
 
     for (suffix in 1968..2023) {

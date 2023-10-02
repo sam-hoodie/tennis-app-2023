@@ -9,7 +9,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 
 fun main() {
-    val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:test.db")
+    val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:atp.db")
     Database.Schema.create(driver)
 
     val list = listOf("current", "20s", "10s", "00s", "90s", "80s", "70s")
